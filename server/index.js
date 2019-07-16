@@ -4,11 +4,14 @@ import handleStatice from 'koa-static';
 import Routes from '../client/Routes';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
+import { renderRoutes } from 'react-router-config';
 
 const app = new Koa();
 app.use(handleStatice('public'));
 app.use(async ctx => {
-  const content = renderToString(<StaticRouter location={ctx.path}>{Routes}</StaticRouter>);
+  const content = renderToString(
+    <StaticRouter location={ctx.path}>{renderRoutes(Routes)}</StaticRouter>
+  );
   ctx.body = `
   <html>
     <head>

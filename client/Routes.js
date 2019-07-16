@@ -1,11 +1,26 @@
-import React, { Fragment } from 'react';
-import { Route } from 'react-router-dom';
+import App from './App';
 import Home from './views/Home';
 import Login from './views/Login';
+import NotFound from './views/NotFound';
 
-export default (
-  <Fragment>
-    <Route path="/" exact component={Home} />
-    <Route path="/login" exact component={Login} />
-  </Fragment>
-);
+export default [
+  {
+    component: App,
+    routes: [
+      {
+        path: '/',
+        component: Home,
+        exact: true
+      },
+      {
+        path: '/login',
+        component: Login,
+        exact: true
+      },
+      {
+        path: '*',
+        component: NotFound
+      }
+    ]
+  }
+];
