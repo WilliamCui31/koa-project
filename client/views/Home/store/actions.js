@@ -7,6 +7,8 @@ const changeList = list => ({
 
 export const getHomeList = () => (dispatch, getState, axiosInstance) =>
   axiosInstance.get('/api/products').then(res => {
-    const list = res.products;
+    console.log('list: ', list);
+    debugger;
+    const list = res.data.products;
     dispatch(changeList(list));
   });
