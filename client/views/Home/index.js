@@ -13,7 +13,7 @@ const Home = ({ list, getHomeList }) => {
     if (!list.length) {
       getHomeList();
     }
-  });
+  }, []);
 
   return (
     <div>
