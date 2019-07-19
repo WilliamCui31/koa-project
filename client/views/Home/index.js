@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { getHomeList } from './store/actions';
+import { getProducts, createProduct } from './store/actions';
 
-const Home = ({ list, getHomeList }) => {
+const Home = ({ list, getProducts, createProduct }) => {
   const [count, setCount] = useState(0);
+  const [name, setName] = useState('');
+  const [manufacturer, setManufacturer] = useState('');
+  const [price, setPrice] = useState('');
 
   useEffect(() => {
     document.title = `You are clicked ${count} times.`;
@@ -11,34 +14,64 @@ const Home = ({ list, getHomeList }) => {
 
   useEffect(() => {
     if (!list.length) {
-      getHomeList();
+      getProducts();
     }
   }, []);
+
+  const handleCreate = () => {
+    createProduct({ name, manufacturer, price });
+  };
 
   return (
     <div>
       <p>You are clicked {count} times.</p>
       <button onClick={() => setCount(count + 1)}>Click me</button>
-      <div className="test">
+      <ul className="create">
+        <li>
+          <label htmlFor="name">Name</label>
+          <input type="text" id="name" value={name} onChange={e => setName(e.target.value)} />
+        </li>
+        <li>
+          <label htmlFor="manufacturer">Manufacturer</label>
+          <input
+            type="text"
+            id="manufacturer"
+            value={manufacturer}
+            onChange={e => setManufacturer(e.target.value)}
+          />
+        </li>
+        <li>
+          <label htmlFor="price">Price</label>
+          <input type="text" id="price" value={price} onChange={e => setPrice(e.target.value)} />
+        </li>
+        <li>
+          <button onClick={handleCreate}>Create</button>
+        </li>
+      </ul>
+      <ul className="list">
         {list.map(({ id, name, price }) => (
-          <div key={id}>
+          <li key={id}>
             {name}-{price}
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
 
 const mapStateToProps = state => ({ list: state.home.newList });
 
-const mapDispatchToProps = dispatch => ({ getHomeList: () => dispatch(getHomeList()) });
+const mapDispatchToProps = dispatch => ({
+  getProducts: () => dispatch(getProducts()),
+  createProduct: ({ name, manufacturer, price }) =>
+    dispatch(createProduct({ name, manufacturer, price }))
+});
 
 const exportHome = connect(
   mapStateToProps,
   mapDispatchToProps
 )(Home);
 
-exportHome.loadData = store => store.dispatch(getHomeList());
+exportHome.loadData = store => store.dispatch(getProducts());
 
 export default exportHome;

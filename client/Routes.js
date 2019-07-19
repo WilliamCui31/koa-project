@@ -5,6 +5,7 @@ import NotFound from './views/NotFound';
 
 export default [
   {
+    path: '/',
     component: App,
     routes: [
       {
